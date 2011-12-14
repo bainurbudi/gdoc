@@ -1,0 +1,31 @@
+Upload you file here<br />
+
+<%= form_tag  "upload" , { :multipart => true } do %>
+  <label for="file">File to Upload</label> <%= file_field_tag "file" %>
+  <%= submit_tag "Upload" %>
+<% end %>
+
+<br /><br /><br />
+Enter your url here <br />
+
+<%= form_tag "upload_urls" do %>
+  <%= text_field_tag "url", nil, :style => "width:300px;" %>
+  <%= submit_tag "submit url" %>
+<% end %>
+
+Here are the Folders on The google <br />
+<% @folders.each do |folder| %>
+   <h4><%= folder.title %></h4>
+  <% end %>
+<br /><br />
+Enter the Folder name; and The files<br />
+<%= form_tag "upload_folder",{ :multipart => true } do %>
+  <%= text_field_tag "folder", nil, :style => "width:300px;" %>
+  <label for="file">File to Upload</label> <%= file_field_tag "file" %>
+  <%= submit_tag "submit url" %>
+<% end %>
+
+<br /><br /><br /><br />
+<%= link_to "Embed files","/embed_files", :popup => true %>
+
+

@@ -1,0 +1,104 @@
+    * \" – double quote
+    * \\ – single backslash
+    * \a – bell/alert
+    * \b – backspace
+    * \r – carriage return
+    * \n – newline
+    * \s – space
+    * \t – tab
+
+  def accepts_hash( var )
+    print "got: ", var.inspect # will print out what it received
+  end
+ 
+  accepts_hash :arg1 => 'giving arg1', :argN => 'giving argN'
+  # => got: {:argN=>"giving argN", :arg1=>"giving arg1"}
+
+  accepts_hash( :arg1 => 'giving arg1', :argN => 'giving argN' )  # argument list enclosed in parens
+  accepts_hash( { :arg1 => 'giving arg1', :argN => 'giving argN' } ) # hash is explicitly created
+
+  accepts_hash( :arg1 => 'giving arg1', :argN => 'giving argN' )  { |s| puts s }
+  accepts_hash( { :arg1 => 'giving arg1', :argN => 'giving argN' } )  { |s| puts s } 
+  # second line is more verbose, hash explicitly created, but essentially the same as above
+
+#yield 
+def sepakbola
+yield("Chelsea", "Inggris")
+yield("Barca", "Spanyol")
+end 
+sepakbola {|club, country| puts "Tim #{club} dari negara #{country}"}
+
+#procs
+def gen_times(factor)
+return Proc.new {|n| n*factor }
+end
+ 
+  times3 = gen_times(3)      # 'factor' is replaced with 3
+  times5 = gen_times(5)
+ 
+  times3.call(12)               #=> 36
+  times5.call(5)                #=> 25
+  times3.call(times5.call(4))   #=> 60
+
+#lamda
+
+def do_twice(what)
+what.call
+what.call
+end
+do_twice lambda {puts "Hola"}
+
+#lamda 2 kali panggil
+
+def do_twice(what1, what2, what3)
+      2.times do
+          what1.call
+          what2.call
+          what3.call
+      end
+  end
+ 
+  do_twice(   lambda {print "Hola, "},
+              lambda {print "querido "},
+              lambda {print "amigo\n"})
+#the ampersand (&)
+
+ def contrived(a, &f)
+      # the block can be accessed through f
+      f.call(a)
+ 
+      # but yield also works !
+      yield(a)
+  end
+ 
+  # this works
+  contrived(25) {|x| puts x}
+ 
+  # this raises ArgumentError, because &f 
+  # isn't really an argument - it's only there 
+  # to convert a block
+  contrived(25, lambda {|x| puts x})
+
+#alias
+
+class Chameleon
+    alias __inspect__ inspect
+    def method_missing(method, *arg)
+      if (method.to_s)[0..2] == "to_"
+        @identity = __inspect__.sub("Chameleon", method.to_s.sub('to_','').capitalize)
+        def inspect
+          @identity
+        end
+        self
+      else
+        super #method_missing overrides the default Kernel.method_missing
+              #pass on anything we weren't looking for so the Chameleon stays unnoticed and uneaten ;)
+      end
+    end
+  end
+  mrlizard = Chameleon.new
+  mrlizard.to_rock
+
+
+
+

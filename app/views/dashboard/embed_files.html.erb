@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <tr><th>Title</th></tr>
+    <tr><th>Embed Url (Gdoc Viewer)</th></tr>
+  </thead>
+
+<tbody>
+<% @files.each do |file| %>
+  <tr>
+    <td><%= file.title %></td>
+    <td><%= link_to "Open","http://docs.google.com/gview?url=#{file.html_uri}" %></td>
+  </tr>
+  <% end %>
+</tbody>
+
+</table>
